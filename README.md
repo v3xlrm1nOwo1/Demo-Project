@@ -10,13 +10,22 @@ linlk: <a href="https://github.com/cmderdev/cmder/releases/download/v1.3.20/cmde
 
 ---
 
-## 2 - Git 
-1 - Open cmder
 
-2 - Create New folder
+---
+## 3 - Git 
+### 1 - Open cmder
+
+### 2 - Create New folder
 ```zsh
 mkdir folder-name
 ```
+
+### 3 - cd the folder
+```zsh
+cd folder-name
+```
+
+### 4 - Follow commoads:
 
 ```zsh
 git init
@@ -28,14 +37,6 @@ git config --global user.name Your-Name
 
 ```zsh
 git config --global user.email "Your-Email"
-```
-
-```zsh
-git clone https://github.com/BlackHeart-AI/Demo-Project.git
-```
-
-```zsh
-git branch Branch-name
 ```
 
 ---
@@ -51,3 +52,10 @@ git branch Branch-name
 
 ![4](https://user-images.githubusercontent.com/87325345/204471866-9583680e-2045-4b2a-b09f-1c3cb2826dcf.png)
 
+```zsh
+git clone https://github.com/BlackHeart-AI/Demo-Project.git
+```
+
+```zsh
+git branch Branch-name
+```
