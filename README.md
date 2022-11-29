@@ -41,16 +41,21 @@ git config --global user.email "Your-Email"
 
 ---
 
-![1](https://user-images.githubusercontent.com/87325345/204471788-14a63ed1-c446-434d-bb43-d620ffd74ffb.png)
+![Inked1](https://user-images.githubusercontent.com/87325345/204480991-638acca8-cc37-4fa6-85c0-121331ee18cd.jpg)
+
+---
+
+![Inked2](https://user-images.githubusercontent.com/87325345/204481018-b970e5d3-b2fd-4f31-b126-da8efaccacbc.jpg)
+
+---
+
+![Inked3](https://user-images.githubusercontent.com/87325345/204481035-2dba44af-6e29-4bbb-ab67-6d01805a2154.jpg)
+
+---
+
+![Inked4](https://user-images.githubusercontent.com/87325345/204483900-5f4927b9-d872-448f-9b1b-d2a232b88bdf.jpg)
 
 
-![2](https://user-images.githubusercontent.com/87325345/204471802-9a9d96c3-db4b-4a84-9833-f57874afab5d.png)
-
-
-![3](https://user-images.githubusercontent.com/87325345/204471819-cb104b28-8212-483c-9bb0-3399f2ce5ab9.png)
-
-
-![4](https://user-images.githubusercontent.com/87325345/204471866-9583680e-2045-4b2a-b09f-1c3cb2826dcf.png)
 
 ```zsh
 git clone https://github.com/BlackHeart-AI/Demo-Project.git
