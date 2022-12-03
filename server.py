@@ -2,81 +2,191 @@ import threading
 import socket
 import sqlite3
 
-# addr
-host = "127.0.0.1" # localhost
-port = 1234
+# address
+HOST = socket.gethostname() # localhost
+PORT = 1234
+address = (HOST, PORT)
 id = 1
-
-con = sqlite3.connect("Demo.db")
-cur = con.cursor()
-cur.execute("CREATE TABLE infoh(ID PRIMARY KEY, first_name, last_name, addr, academic, year,semester,Tel)")
-
 
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind((host, port))
+server.bind(address)
 server.listen()
 
 
-def add_(data):
-    cur.executemany("INSERT INTO infoh VALUES(?, ?, ?, ?, ?, ?, ?, ?)", data)
+# Created DB
+con = sqlite3.connect("Demo.db")
+cur = con.cursor()
+# cur.execute("CREATE TABLE info(ID INTEGER PRIMARY KEY AUTOINCREMENT, first_name, last_name, addr, academic, year,semester,Tel)")
+
+
+def add_(data_):
+    cur.executemany("INSERT INTO info(first_name, last_name, addr, academic, year,semester,Tel) VALUES(?, ?, ?, ?, ?, ?, ?)", data_)
     con.commit()
 
 
-def searching(id):
-    for row in cur.execute(f"SELECT ID, first_name, last_name, addr, academic, year,semester,Tel FROM infoh WHERE ID = {id}"):
-        print(row)
+def searching(ID):
+    for row in cur.execute(f"SELECT ID, first_name, last_name, addr, academic, year,semester,Tel FROM info WHERE ID = {ID}"):
+        return row
 
 
-def send(data):
-    return str(data).rjust(1024, " ").encode("utf-8")
+def delete(ID):
+    cur.execute(f"DELETE FROM info WHERE ID = {ID}")
+
+
+def send(msg):
+    return str(msg).rjust(1024, " ").encode("utf-8")
 
 
 def main():
-    server.listen()
-    conn, addr = server.accept()
-    list_ = []
-    l = ()
-    print("Online.....")
-    send("You can add and search")
-    
-    if dat.decode("utf-8").strip() == "add":
-        send("fname")
-        if type(dat.decode("utf-8").strip()) == str:
-            list_.append(dat.decode("utf-8").strip())
+    print("Start.....")
+    while True:
+        conn, addr = server.accept()
+        
+        print(f"Connction from  ({addr}) has been established!!!")
+
+        l = []
+        
+        # send True to client for enter opration or logout
+        conn.sendall(send("True"))
+               
+        # recv opration
+        opration = conn.recv(1024).decode("utf-8").strip()
+        
+        
+        if opration == "add":
+            print("add")
+            while True:
+                # Frist Name
+                conn.sendall(send("frist_name"))
+                frist_name = conn.recv(1024).decode("utf-8").strip()
+                if frist_name.isalpha():
+                    print(f"Frist name  is valid: {frist_name}")
+                    l.append(frist_name)
+                    print(l)
+                    break
             
-            send("lname")
-            if type(dat.decode("utf-8").strip()) == str:
-                list_.append(dat.decode("utf-8").strip())
-                
-                l = []
-                send(f"you can addr: {l}")
-                send("addr")
-                if type(dat.decode("utf-8").strip()) == str and dat.decode("utf-8").strip() in l:
-                    list_.append(dat.decode("utf-8").strip())
+            while True:    
+                # Last Name
+                conn.sendall(send("last_name"))
+                last_name = conn.recv(1024).decode("utf-8").strip()
+                if last_name.isalpha():
+                    print(f"Last name  is valid: {last_name}")
+                    l.append(last_name)
+                    print(l)
+                    break
+            
                     
-        if len(list_) == 7:
-            l = (id, list_[0], list_[1], list_[2], list_[3], list_[4], list_[5], list_[6])
-            list_ = [l]
-            add_(list_)
-            id += 1
+            while True:        
+                # Address
+                conn.sendall(send("address"))
+                conn.sendall(send("You Can only choice: {A - B - C}"))
+                address = conn.recv(1024).decode("utf-8").strip()
+                if address in ("A", "B", "C"):
+                    print(f"Address  is valid: {address}")
+                    l.append(address)
+                    print(l)
+                    break
+            
+            while True:    
+                # Academic
+                conn.sendall(send("academic"))
+                academic = conn.recv(1024).decode("utf-8").strip()
+                if academic.isalpha():
+                    print(f"Academic  is valid: {academic}")
+                    l.append(academic)
+                    print(l)
+                    break  
                 
+            while True:    
+                # Year
+                conn.sendall(send("year"))
+                year = conn.recv(1024).decode("utf-8").strip()
+                if year.isdigit():
+                    year = int(year)
+                    print(f"Year  is valid: {year}")
+                    l.append(year)
+                    print(l)
+                    break      
+            
+            while True:    
+                # Semester
+                conn.sendall(send("semester"))
+                semester = conn.recv(1024).decode("utf-8").strip()
+                if semester.isdigit():
+                    semester = int(semester)
+                    print(f"Semester  is valid: {semester}")
+                    l.append(semester)
+                    print(l)
+                    break 
+            
+            
+            while True:    
+                # Tel
+                conn.sendall(send("tel"))
+                tel = conn.recv(1024).decode("utf-8").strip()
+                if tel.isdigit():
+                    print(f"Tel  is valid: {tel}")
+                    l.append(tel)
+                    print(l)
+                    break 
+            
+            if len(l) == 7:
+                l = [(l[0], l[1], l[2], l[3], l[4], l[5], l[6])]
+                add_(l)
+                for row in cur.execute(f"SELECT ID, first_name, last_name, addr, academic, year,semester,Tel FROM info ORDER BY ID DESC LIMIT 1"):
+                    print(row)
+                user = f">>> ID: {row[0]}\n>>> First Name: {row[1]}\n>>> Last Name: {row[2]}\n>>> Address: {row[3]}\n>>> Academic: {row[4]}\n>>> Year: {row[5]}\n>>> Semester: {row[6]}\n>>> Tel: {row[7]}"
+                conn.sendall(send(user))
+                print(f"client info: {user}")
+                       
+            
+        elif opration == "search":
+            print(opration)
+            send("id")
+            while True:
+                client_id = conn.recv(1024).decode("utf-8").strip()
+                if client_id.isdigit():
+                    client_id = int(client_id)
+                    if searching(client_id):
+                        client_info = searching(client_id)
+                        user = f">>> ID: {client_info[0]}\n>>> First Name: {client_info[1]}\n>>> Last Name: {client_info[2]}\n>>> Address: {client_info[3]}\n>>> Academic: {client_info[4]}\n>>> Year: {client_info[5]}\n>>> Semester: {client_info[6]}\n>>> Tel: {client_info[7]}"
+                        print(user)
+                        conn.sendall(send(user))
+                    else:
+                        conn.sendall(send("Client not found!!!!"))
+                    break
+                
+        elif opration == "delete":
+            print(opration)
+            send("id")
+            while True:
+                client_id = conn.recv(1024).decode("utf-8").strip()
+                if client_id.isdigit():
+                    client_id = int(client_id)
+                    if searching(client_id):
+                        client_info = searching(client_id)
+                        user = f"Deleted this user: \n>>> ID: {client_info[0]}\n>>> First Name: {client_info[1]}\n>>> Last Name: {client_info[2]}\n>>> Address: {client_info[3]}\n>>> Academic: {client_info[4]}\n>>> Year: {client_info[5]}\n>>> Semester: {client_info[6]}\n>>> Tel: {client_info[7]}"
+                        print(user)
+                        conn.sendall(send(user))
+                        client_info = delete(client_id)
+                        print(f"delete: {client_info}")
+                        break
+                    else:
+                        conn.sendall(send("Client not found!!!!"))
+                        break
+                
+                
+            
+        elif opration == "logout":
+            break
+            
         else:
-            send("try enter your data...")
-    
-    elif dat.decode("utf-8").strip() == "search":
-        send("id")
-        if searching(dat.decode("utf-8").strip()):
-            send(searching(dat.decode("utf-8").strip()))
-        else:
-            send("")
-    
-    
-    else:
-        send("Error ):")
-        
-    thread = threading.Thread(target=add_, args=(data, ))
-    thread.start()
-        
-    thread = threading.Thread(target=searching, args=(id, ))
-    thread.start()
+            conn.sendall(send("Error ):"))
+            
+
+            
+thread = threading.Thread(target=main)
+thread.start()
+                   
+main()    
