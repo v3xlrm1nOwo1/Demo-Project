@@ -2,8 +2,9 @@ import threading
 import socket
 import sqlite3
 
-# address
-HOST = socket.gethostname() # localhost
+# address "192.168.56.1"
+HOST =  socket.gethostname() # localhost
+# print(HOST)
 PORT = 1234
 address = (HOST, PORT)
 id = 1
@@ -39,6 +40,8 @@ def send(msg):
 
 
 def main():
+    # print(HOST)
+
     print("Start.....")
     while True:
         conn, addr = server.accept()
@@ -139,6 +142,11 @@ def main():
                 user = f">>> ID: {row[0]}\n>>> First Name: {row[1]}\n>>> Last Name: {row[2]}\n>>> Address: {row[3]}\n>>> Academic: {row[4]}\n>>> Year: {row[5]}\n>>> Semester: {row[6]}\n>>> Tel: {row[7]}"
                 conn.sendall(send(user))
                 print(f"client info: {user}")
+                # conn.sendall(send("opr"))
+
+
+            
+            
                        
             
         elif opration == "search":
@@ -156,6 +164,8 @@ def main():
                     else:
                         conn.sendall(send("Client not found!!!!"))
                     break
+
+        
                 
         elif opration == "delete":
             print(opration)
@@ -179,10 +189,12 @@ def main():
                 
             
         elif opration == "logout":
+            conn.close()
             break
             
         else:
             conn.sendall(send("Error ):"))
+            break
             
 
             
