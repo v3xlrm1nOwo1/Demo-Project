@@ -22,11 +22,12 @@ if msg == "True":
     print(msg)
     print(">>> you can:\n1 - add.\n2 - search.\n3 - delete.")
     oprations = input("Enter Oprations or enter logout to end conn: ")
+    oprations = oprations.lower()
     print(oprations)
     client.sendall(send(oprations))
-    if oprations == "logout":
-        pass
-    print("=" * 50)
+    # if oprations == "logout":
+    #     pass
+    # print("=" * 50)
 
 while True:
     
@@ -36,7 +37,7 @@ while True:
             # frist name
         if messg == "frist_name":
             frisrt_name = input(">>> Enter You Frist Name: ")
-            client.sendall(send(frisrt_name))
+            client.sendall(send(frisrt_name.lower()))
             
             # last name
         elif messg == "last_name":
@@ -47,11 +48,11 @@ while True:
         elif messg == "address":
             print(client.recv(1024).decode("utf-8").strip())
             address = input(">>> Enter You address: ")
-            client.sendall(send(address))
+            client.sendall(send(address.upper()))
         
         elif messg == "academic":
             academic = input(">>> Enter You academic: ")
-            client.sendall(send(academic))
+            client.sendall(send(academic.lower()))
         
         elif messg == "year":
             year = input(">>> Enter You year: ")
@@ -65,15 +66,26 @@ while True:
             tel = input(">>> Enter You tel: ")
             client.sendall(send(tel))
             print("=" * 50)
-            
+
+        # elif messg == "opr":
+        #     print(">>> you can:\n1 - add.\n2 - search.\n3 - delete.")
+        #     oprations = input("Enter Oprations or enter logout to end conn: ")
+        #     if oprations == "logout":
+        #         client.sendall(send(oprations))
+
         else:
             print(f"{messg}") 
             print("=" * 50)
-            # print(">>> you can:\n1 - add.\n2 - search.")
+            break
+        
+
+            # print(">>> you can:\n1 - add.\n2 - search.\n3 - delete.")
             # oprations = input("Enter Oprations or enter logout to end conn: ")
             # if oprations == "logout":
-            #     break
-            # client.sendall(send(oprations))  
+            #     client.sendall(send(oprations))
+
+
+        
             
             
     elif oprations == "search":
@@ -82,6 +94,10 @@ while True:
         print(client.recv(1024).decode("utf-8").strip())
         print("=" * 50)
         break
+        # print(">>> you can:\n1 - add.\n2 - search.\n3 - delete.")
+        # oprations = input("Enter Oprations or enter logout to end conn: ")
+        # if oprations == "logout":
+        #     client.sendall(send(oprations))
     
     elif oprations == "delete":
         id = input("Enter your ID: ")
@@ -89,3 +105,21 @@ while True:
         print(client.recv(1024).decode("utf-8").strip())
         print("=" * 50)
         break
+        # print(">>> you can:\n1 - add.\n2 - search.\n3 - delete.")
+        # oprations = input("Enter Oprations or enter logout to end conn: ")
+        # if oprations == "logout":
+        #     client.sendall(send(oprations))
+
+
+    elif oprations == "logout":
+        client.sendall(send("logout"))
+        client.close()
+        break
+        print("=" * 50)
+
+    else:
+        print("=" * 50)
+        break
+
+# thread = threading.Thread(target=main)
+# thread.start()
