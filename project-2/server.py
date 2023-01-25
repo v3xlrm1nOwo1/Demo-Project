@@ -53,16 +53,16 @@ l1 = []
 l2 = []
 username = "" 
 def acount(conn):
-    conn.sendall(send("signup or login"))
-    opration = recv(conn)
-    print(f">>> {opration}")
+    conn.sendall(send("singup or login"))
+    opration = conn.recv(1024).decode("utf-8").strip()
+    print(f">>>111 {opration}")
 
-    if opration == "signup":
+    if opration == "singup":
 
         # Name
         while True:
             conn.sendall(send("name"))
-            name = recv(conn)
+            name = conn.recv(1024).decode("utf-8").strip()
             if name.isalpha():
                 l1.append(name)
                 break
@@ -71,7 +71,7 @@ def acount(conn):
         # Email
         while True:
             conn.sendall(send("email"))
-            email = recv(conn)
+            email = conn.recv(1024).decode("utf-8").strip()
             if re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", email):
                 l1.append(email)
                 break
@@ -79,7 +79,7 @@ def acount(conn):
         #password
         while True:
             conn.sendall(send("password"))
-            password = recv(conn)
+            password = conn.recv(1024).decode("utf-8").strip()
             l, u, p, d = 0, 0, 0, 0
             if (len(password) >= 8): #"R@m@_f0rtu9e$"
                 for i in password:
@@ -126,7 +126,7 @@ def acount(conn):
         # Email
         while True:
             conn.sendall(send("email"))
-            email = recv(conn)
+            email = conn.recv(1024).decode("utf-8").strip()
             if re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", email):
                 l2.append(email)
                 break
@@ -134,7 +134,7 @@ def acount(conn):
         #password
         while True:
             conn.sendall(send("password"))
-            password = recv(conn)
+            password = conn.recv(1024).decode("utf-8").strip()
             l, u, p, d = 0, 0, 0, 0
             if (len(password) >= 8): #"R@m@_f0rtu9e$"
                 for i in password:
@@ -180,8 +180,7 @@ def main():
         user = acount(conn=conn)
         if user:
             conn.sendall(send("select game"))
-        else:
-            user = acount(conn=conn)
+        
 
 
            
