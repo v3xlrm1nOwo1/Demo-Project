@@ -1,4 +1,6 @@
+import subprocess
 import socket
+import os
 
 HOST = socket.gethostname() # localhost
 PORT = 1234
@@ -21,9 +23,10 @@ while True:
     print(f"msg: {msg}")
     print("End")
 
-    if msg == "signup or login":
-        choice = input(">>> Slect signup or login: ")
-        client.sendall(send(choice))
+    if msg == "singup or login":
+        opration = input(">>> Slect singup or login: ")
+        print(opration)
+        client.sendall(send(opration))
 
     elif msg == "name":
         name = input(">>> Enter username: ")
@@ -38,4 +41,16 @@ while True:
         client.sendall(send(password))
 
     elif msg == "select game":
-        pass
+        print()
+        game = input(">>> Select From This:\n1 - Tic Tac Toe\n2 - Typing Speed Text\n3 - Tetris\n>>> ")
+        if game == "1":
+            os.system("python tictactoe.py")
+            subprocess.run(["python", "tictactoe.py"])
+
+        if game == "2":
+            os.system("python speed_typing.py")
+            subprocess.run(["python", "speed_typing.py"])
+        
+        if game == "3":
+            os.system("python Py_Game.py")
+            subprocess.run(["python", "Py_Game.py"])
